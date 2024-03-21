@@ -47,7 +47,7 @@ These file names are added to new `.gitignore`
 # Completd APIs:
 
 ## Auth:
-End point : `host:port/auth/login`
+End point : `host:port\auth\login`
 
 ##### POST ('\\'):
 
@@ -71,7 +71,24 @@ End point : `host:port\task\all`
     query.authtoken: "authToken"
 
 ```
+Response Structure:
 
+```
+[    
+    {
+    "task_id": 23,
+    "user_id": 1,
+    "task_title": "Task3",
+    "task_description": "Second Task",
+    "task_due_date": "2024-03-24T00:00:00.000Z",
+    "task_status": 0,
+    "task_priority": 3,
+    "is_deleted": false,
+    "updatedAt": "2024-03-21T13:53:01.028Z",
+    "createdAt": "2024-03-21T13:53:01.028Z"
+    }
+]
+```
 End point : `host:port\task\create`
 ##### POST ('\\'):
 
@@ -163,40 +180,12 @@ Response Structure:
 }
 ```
 
-End point : `host:port\task\delete`
-##### PUT ('\\'):
-
-Body Structure :
-
-```
-query.authtoken: "authToken"
-{
-  "task_id":required(int)
-}
-```
-
-Response Structure:
-
-```
-{
-  "task_id": 23,
-  "user_id": 1,
-  "task_title": "Task3",
-  "task_description": "Second Task",
-  "task_due_date": "2024-03-24T00:00:00.000Z",
-  "task_status": 0,
-  "task_priority": 3,
-  "is_deleted": false,
-  "updatedAt": "2024-03-21T13:53:01.028Z",
-  "createdAt": "2024-03-21T13:53:01.028Z"
-}
-```
 
 <hr>
 
 ## SubTask:
 
-End point : `host:port\task\all`
+End point : `host:port\task\subtask\all`
 
 ##### GET ('\\'):
 
@@ -222,7 +211,7 @@ Response Structure:
 ]
 ```
 
-End point : `host:port\task\create`
+End point : `host:port\task\subtask\create`
 ##### POST ('\\'):
 
 Body Structure :
@@ -249,14 +238,15 @@ Response Structure:
 }
 ```
 
-End point : `host:port\task\update`
+End point : `host:port\task\subtask\update`
 ##### PUT ('\\'):
 
 Body Structure :
 
 ```
+query.authtoken: "authToken"
+
 {
-  
   "sub_task_id": required
   "status": "0" or "1"
 }
@@ -277,12 +267,14 @@ Response Structure:
 }
 ```
 
-End point : `host:port\task\delete`
+End point : `host:port\task\subtask\delete`
 ##### PUT ('\\'):
 
 Body Structure :
 
 ```
+query.authtoken: "authToken"
+
 {
   "sub_task_id":required(int)
 }
@@ -292,44 +284,14 @@ Response Structure:
 
 ```
 {
-  "task_id": 23,
-  "user_id": 1,
-  "task_title": "Task3",
-  "task_description": "Second Task",
-  "task_due_date": "2024-03-24T00:00:00.000Z",
-  "task_status": 0,
-  "task_priority": 3,
+  "sub_task_id": 27,
+  "task_id": 20,
+  "sub_task_title": "Second Sub Task",
+  "sub_task_description": null,
+  "sub_task_status": "1",
   "is_deleted": false,
-  "updatedAt": "2024-03-21T13:53:01.028Z",
-  "createdAt": "2024-03-21T13:53:01.028Z"
-}
-```
-
-End point : `host:port\task\delete`
-##### PUT ('\\'):
-
-Body Structure :
-
-```
-{
-  "task_id":required(int)
-}
-```
-
-Response Structure:
-
-```
-{
-  "task_id": 23,
-  "user_id": 1,
-  "task_title": "Task3",
-  "task_description": "Second Task",
-  "task_due_date": "2024-03-24T00:00:00.000Z",
-  "task_status": 0,
-  "task_priority": 3,
-  "is_deleted": false,
-  "updatedAt": "2024-03-21T13:53:01.028Z",
-  "createdAt": "2024-03-21T13:53:01.028Z"
+  "createdAt": "2024-03-21T13:54:14.000Z",
+  "updatedAt": "2024-03-21T13:54:44.516Z"
 }
 ```
 
