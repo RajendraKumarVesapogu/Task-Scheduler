@@ -73,6 +73,11 @@ module.exports.updateTask = async (req, res) => {
         validatedRequest = await updateTaskSchema.validateAsync(req.body);
         let task_id = validatedRequest.task_id;
         let task = await getTaskById(task_id);
+        if(req.decodedToken.user_id != task.user_id){
+            return res.status(400).json({
+                message: "You are not authorized to Update this task"
+            });
+        }
         task.task_due_date = validatedRequest.due_date;
         task.task_status = validatedRequest.status;
         let updatedTask = await updateTask(task);
@@ -89,6 +94,11 @@ module.exports.deleteTask = async (req, res) => {
         validatedRequest = await deleteTaskSchema.validateAsync(req.body);
         let task_id = validatedRequest.task_id;
         let task = await getTaskById(task_id);
+        if(req.decodedToken.user_id != task.user_id){
+            return res.status(400).json({
+                message: "You are not authorized to delete this task"
+            });
+        }
         task.is_deleted = true;
         let deletedTask = await updateTask(task);
         return res.status(200).json(deletedTask);

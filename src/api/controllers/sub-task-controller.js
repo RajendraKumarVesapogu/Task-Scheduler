@@ -1,6 +1,7 @@
 
 const {createSubTaskSchema, updateSubTaskSchema, deleteSubTaskSchema} = require('../validators/task-validator');
-const {getSubTaskById, getSubTaskByTaskId, createSubTask, updateSubTask, deleteSubTask} = require('../helpers/subTask-helper');
+const {getSubTaskById, getSubTaskByTaskId, createSubTask, updateSubTask} = require('../helpers/subTask-helper');
+const {updateTask} = require('../helpers/task-helper');
 
 module.exports.createSubTask = async (req, res) => {
     try {
@@ -27,7 +28,7 @@ module.exports.updateSubTask = async (req, res) => {
         let subTaskToUpdate = await getSubTaskById(validatedRequest.sub_task_id);
         subTaskToUpdate.sub_task_status = validatedRequest.status;
         if (validatedRequest.status == 1) {
-            let task = await getTaskById(subTaskToUpdate.task_id);
+            let task = await getSubTaskById(subTaskToUpdate.task_id);
             task.task_status = 1;
             await updateTask(task);
         }

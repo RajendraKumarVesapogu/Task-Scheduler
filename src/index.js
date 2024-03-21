@@ -20,8 +20,8 @@ app.use("/", controlRouter);
 
 // Cron Job
 const rule = new schedule.RecurrenceRule();
-rule.hour = 16;
-rule.minute = 2;
+rule.hour = 18;
+rule.minute = 30;
 const job = schedule.scheduleJob(rule, async function(){
 	
 	await checkForDueTasks();
