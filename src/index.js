@@ -6,6 +6,8 @@ const cors = require("cors");
 const controlRouter = require("./api/routes/index");
 const authenticate = require("./api/middleware/authenticate");
 const app = express();
+const schedule = require("node-schedule");
+const {updateTaskPriority, checkForDueTasks} = require('./api/util/cronService');
 
 app.use(express.json());
 app.use(cors());
@@ -15,7 +17,18 @@ app.use("/", controlRouter);
 
 const port = envVariables.serverPortNumber;
 
-server = app.listen(port, () => {
+const rule = new schedule.RecurrenceRule();
+rule.hour = 16;
+rule.minute = 2;
+const job = schedule.scheduleJob("*/1 * * * *", async function(){
+	
+	console.log("cron job started");
+	await checkForDueTasks();
+	await updateTaskPriority();
+	console.log("cron job ran");
+});
+
+const server = app.listen(port, () => {
 	console.log("listening on portnumber : " + port.toString());
 	setRelations();
 	sequelize
