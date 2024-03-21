@@ -21,7 +21,7 @@ const Task = sequelize.define('Task', {
     allowNull: true,
   },
   task_due_date: {
-    type: DataTypes.STRING,
+    type: DataTypes.DATE,
     unique: false,
     allowNull: false,
   },
@@ -31,6 +31,10 @@ const Task = sequelize.define('Task', {
   },
   task_priority : {
     type : DataTypes.INTEGER,
+    allowNull : false,
+  },
+  is_deleted : {
+    type : DataTypes.BOOLEAN,
     allowNull : false,
   },
 

@@ -1,5 +1,6 @@
 const express = require("express");
-const Task = require("../database/models/task");
+const { createTask, getAllTasks, updateTask, deleteTask} = require("../controllers/task-controller");
+const { createSubTask, getAllSubTasks, updateSubTask, deleteSubTask} = require("../controllers/sub-task-controller");
 const TaskRouter = express.Router();
 
 // TODO : implement HATEOAS
@@ -9,16 +10,18 @@ TaskRouter.get("/", (req, res) => {
 	});
 });
 
-TaskRouter.post("/create", async (req, res) => {
-	try {
-		const task = await Task.create(req.body);
-		res.status(200).json(task);
-	} catch (error) {
-		res.status(400).json({
-			message: error.message,
-		});
-	}
-});
-TaskRouter.get('/all',)
+TaskRouter.post("/create",createTask);
+TaskRouter.get('/all',getAllTasks);
+TaskRouter.put('/update',updateTask);
+TaskRouter.put('/delete',deleteTask);
+
+
+TaskRouter.post("/subtask/create",createTask);
+TaskRouter.get('/subtask/all',getAllTasks);
+TaskRouter.put('/subtask/update',updateTask);
+TaskRouter.put('/subtask/delete',deleteTask);
+
+
+// TaskRouter.post("/subtask/create",createSubTask);
 
 module.exports = TaskRouter;

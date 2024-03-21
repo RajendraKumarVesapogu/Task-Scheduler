@@ -10,7 +10,7 @@ module.exports = function (req, res, next) {
 	if (!decodedToken) {
 		return res.status(401).send("Invalid Auth Token");
 	}
-	if (!decodedToken.user_id || !decodedToken.user_phone_number)
+	if (!decodedToken.user_id || !decodedToken.number)
 		return res.status(401).send("Invalid Auth token");
 	req.decodedToken = decodedToken;
 	next();

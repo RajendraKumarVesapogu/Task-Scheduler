@@ -25,7 +25,7 @@ module.exports.generateAuthToken = function (number) {
 module.exports.validateToken = (token) => {
 	try {
 		var decoded = jwt.verify(token, envVariables.jwt_secret);
-		console.log(decoded);
+		// console.log(decoded);
 		return decoded;
 	} catch (err) {
 		return null;

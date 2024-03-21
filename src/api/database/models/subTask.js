@@ -28,6 +28,10 @@ const SubTask = sequelize.define('SubTask', {
     type : DataTypes.INTEGER,
     allowNull : false,
   },
+  is_deleted : {
+    type : DataTypes.BOOLEAN,
+    allowNull : false,
+  },
 
 }, 
 

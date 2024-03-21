@@ -8,7 +8,7 @@ const envVariables = {
 		host: process.env.DB_HOST,
 		dialect: process.env.DB_DIALECT,
 		logging: process.env.DB_LOGGING == "true",
-		force: process.env.DB_FORCE == "false",
+		force: process.env.DB_FORCE == "true",
 	},
 	
     jwt_secret: process.env.JWT_SECRET,
