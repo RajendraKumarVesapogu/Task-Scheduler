@@ -7,8 +7,8 @@ const createTaskSchema = Joi.object({
 });
 
 const createSubTaskSchema = Joi.object({
-    taskId: Joi.number().required(),
-    subTitle: Joi.string().required(),
+    task_id: Joi.number().required(),
+    sub_title: Joi.string().required(),
     description: Joi.string().required(),
 });
 
@@ -16,26 +16,26 @@ const getAllTasksSchema = Joi.object({
 });
 
 const getAllSubTasksSchema = Joi.object({
-    taskId: Joi.number().required(),
+    task_id: Joi.number().required(),
 });
 
 const updateTaskSchema = Joi.object({
-    taskId: Joi.number().required(),
+    task_id: Joi.number().required(),
     due_date: Joi.date().format('YYYY-MM-DD HH:mm').required(),
     status: Joi.string().valid("0", "1", "2").required(),
 });
 const updateSubTaskSchema = Joi.object({
-    subTaskId: Joi.number().required(),
-    description: Joi.string().required(),
+    sub_task_id: Joi.number().required(),
+    status: Joi.string().valid("0", "1").required(),
 });
 
 const deleteTaskSchema = Joi.object({
-    id: Joi.number().required(),
+    task_id: Joi.number().required(),
 });
 
 const deleteSubTaskSchema = Joi.object({
-    id: Joi.number().required(),
+    sub_task_id: Joi.number().required(),
 });
 
 
-module.exports = loginRequestSchema;
+module.exports = {createTaskSchema, createSubTaskSchema, getAllTasksSchema, getAllSubTasksSchema, updateTaskSchema, updateSubTaskSchema, deleteTaskSchema, deleteSubTaskSchema};

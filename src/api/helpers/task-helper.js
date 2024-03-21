@@ -12,9 +12,6 @@ module.exports.updateTask = async (task) => {
 module.exports.deleteTask = async (task) => {
     return await task.destroy();
 }
-module.exports.getAllTasks = async () => {
-    return await Task.findAll();
-}
 module.exports.getTaskByUserId = async (userId) => {
     return await Task.findAll({ where: { userId: userId } });
 }
