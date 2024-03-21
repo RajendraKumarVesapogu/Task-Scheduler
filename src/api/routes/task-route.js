@@ -1,12 +1,13 @@
 const express = require("express");
 const { createTask, getAllTasks, updateTask, deleteTask} = require("../controllers/task-controller");
-const { createSubTask, getAllSubTasks, updateSubTask, deleteSubTask} = require("../controllers/sub-task-controller");
 const TaskRouter = express.Router();
+const subTaskRouter = require('./subTask-route');
+
 
 // TODO : implement HATEOAS
 TaskRouter.get("/", (req, res) => {
 	res.json({
-		status: "to be implemented login HATEOAS",
+		status: "to be implemented Task HATEOAS",
 	});
 });
 
@@ -16,12 +17,6 @@ TaskRouter.put('/update',updateTask);
 TaskRouter.put('/delete',deleteTask);
 
 
-TaskRouter.post("/subtask/create",createTask);
-TaskRouter.get('/subtask/all',getAllTasks);
-TaskRouter.put('/subtask/update',updateTask);
-TaskRouter.put('/subtask/delete',deleteTask);
-
-
-// TaskRouter.post("/subtask/create",createSubTask);
+TaskRouter.use('/subtask',subTaskRouter);
 
 module.exports = TaskRouter;
