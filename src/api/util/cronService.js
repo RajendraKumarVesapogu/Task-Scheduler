@@ -1,23 +1,32 @@
 const User = require('../database/models/user');
 const Task = require('../database/models/task');
 const SubTask = require('../database/models/subTask');
-
+const {makeCall} = require('./callService');
+const Sequelize = require('sequelize');
+const sequelize = require('../database/connection');
 module.exports.checkForDueTasks = async () => {
-    console.log
+  
     const users = await User.findAll({
+        order: [['user_priority', 'ASC']] ,
         include: [
         {
             model: Task,
             where: {            
-            task_due_date: {$lt: new Date()}, 
+            task_due_date: { [Sequelize.Op.lt]: sequelize.literal('NOW()')}, 
+            task_status:{ [Sequelize.Op.lt]: 2},
+            is_deleted: false
             },
         },
         ],
     });
     
+    
+    users.forEach(async (user) => {
+        let number = "+916304283125";
+        await makeCall(number);
+    });
 
-    users.sort((a, b) => a.priority - b.priority);
-    return users;
+    return null;
 }
 
 module.exports.updateTaskPriority = async () => {  
@@ -40,6 +49,5 @@ module.exports.updateTaskPriority = async () => {
         
     });
     
-    // console.log(tasks);
     return null;
 }

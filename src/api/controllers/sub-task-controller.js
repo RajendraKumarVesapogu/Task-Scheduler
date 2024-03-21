@@ -26,6 +26,11 @@ module.exports.updateSubTask = async (req, res) => {
         validatedRequest = await updateSubTaskSchema.validateAsync(req.body);
         let subTaskToUpdate = await getSubTaskById(validatedRequest.sub_task_id);
         subTaskToUpdate.sub_task_status = validatedRequest.status;
+        if (validatedRequest.status == 1) {
+            let task = await getTaskById(subTaskToUpdate.task_id);
+            task.task_status = 1;
+            await updateTask(task);
+        }
         let subTask = await updateSubTask(subTaskToUpdate);
         return res.status(200).json(subTask);
     } catch (error) {
