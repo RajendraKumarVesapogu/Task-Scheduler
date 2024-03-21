@@ -7,7 +7,7 @@ const Task = require("./models/task");
 const SubTask = require("./models/subTask");
 
 
-const Relations = () => {
+const setRelations = () => {
 
     User.hasMany(Task, {
         foreignKey: 'user_id',
@@ -39,4 +39,4 @@ const Relations = () => {
 
 };
 
-module.exports = Relations;
+module.exports = setRelations;
