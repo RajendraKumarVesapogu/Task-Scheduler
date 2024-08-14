@@ -14,15 +14,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
-    env:
-      # dynamic
-      DGN: ${{ github.event.inputs.dgn }}
-      APP_NAME: ${{ github.event.inputs.dgn }}-dashboard-server2
-      # static
-      APP_NAME_SHORT: "dashboard-server2"
-      AWS_REGION: "ap-south-1"
-      DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
