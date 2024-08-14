@@ -1,0 +1,25 @@
+name: Print Latest Commit SHA
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch name"
+        required: true
+        default: 'main'
+
+jobs:
+  print-sha:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Get and print latest commit SHA
+        run: |
+          git fetch origin ${{ github.event.inputs.branch }}
+          LATEST_SHA=$(git rev-parse origin/${{ github.event.inputs.branch }})
+          echo "Latest commit SHA on ${{ github.event.inputs.branch }}: $LATEST_SHA"
