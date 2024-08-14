@@ -1,0 +1,33 @@
+name: Print Commit SHA
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit_sha:
+        description: "Commit SHA (optional, defaults to latest commit on main)"
+        required: false
+
+jobs:
+  print-sha:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Get and print commit SHA
+        run: |
+          if [ -z "${{ github.event.inputs.commit_sha }}" ]; then
+            git fetch origin main
+            COMMIT_SHA=$(git rev-parse origin/development)
+            echo "Using latest commit SHA from main branch: $COMMIT_SHA"
+          else
+            COMMIT_SHA="${{ github.event.inputs.commit_sha }}"
+            echo "Using provided commit SHA: $COMMIT_SHA"
+          fi
+          echo "COMMIT_SHA=$COMMIT_SHA" >> $GITHUB_ENV
+
+      - name: Print final commit SHA
+        run: echo "Final commit SHA: ${{ env.COMMIT_SHA }}"
