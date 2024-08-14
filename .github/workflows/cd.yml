@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       commit_sha:
-        description: "Commit SHA (optional, defaults to latest commit on feature branch)"
+        description: "Commit SHA"
         required: false
       dgn:
         description: "Deployment Environment (stag/prod)"
@@ -25,12 +25,14 @@ jobs:
       - name: Set commit SHA
         run: |
           if [ -z "${{ github.event.inputs.commit_sha }}" ]; then
-            git fetch origin feature
-            LATEST_SHA=$(git rev-parse origin/development)
-            echo "COMMIT_SHA=$LATEST_SHA" >> $GITHUB_ENV
+            git fetch origin main
+            COMMIT_SHA=$(git rev-parse origin/development)
+            echo "Using latest commit SHA from main branch: $COMMIT_SHA"
           else
-            echo "COMMIT_SHA=${{ github.event.inputs.commit_sha }}" >> $GITHUB_ENV
+            COMMIT_SHA="${{ github.event.inputs.commit_sha }}"
+            echo "Using provided commit SHA: $COMMIT_SHA"
           fi
+          echo "COMMIT_SHA=$COMMIT_SHA" >> $GITHUB_ENV
 
       - name: Checkout specific commit
         uses: actions/checkout@v2
