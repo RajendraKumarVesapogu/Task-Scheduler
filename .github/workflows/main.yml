@@ -21,7 +21,7 @@ jobs:
         run: |
           if [ -z "${{ github.event.inputs.commit_sha }}" ]; then
             git fetch origin main
-            COMMIT_SHA=$(git rev-parse origin/development)
+            COMMIT_SHA=$(git rev-parse origin/main)
             echo "Using latest commit SHA from main branch: $COMMIT_SHA"
           else
             COMMIT_SHA="${{ github.event.inputs.commit_sha }}"
@@ -30,4 +30,4 @@ jobs:
           echo "COMMIT_SHA=$COMMIT_SHA" >> $GITHUB_ENV
 
       - name: Print final commit SHA
-        run: echo "Final commit SHA: ${{ env.COMMIT_SHA }}"
+        run: echo "Final commit SHA ${{ env.COMMIT_SHA }}"
