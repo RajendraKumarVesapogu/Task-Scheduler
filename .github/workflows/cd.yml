@@ -1,15 +1,27 @@
-name: Print Commit SHA
+name: AWS Elastic Beanstalk Deployment
 
 on:
   workflow_dispatch:
     inputs:
       commit_sha:
-        description: "Commit SHA (optional, defaults to latest commit on main)"
+        description: "Commit SHA (optional, defaults to latest commit on feature branch)"
         required: false
+      dgn:
+        description: "Deployment Environment (stag/prod)"
+        required: true
 
 jobs:
-  print-sha:
+  deploy:
     runs-on: ubuntu-latest
+
+    env:
+      # dynamic
+      DGN: ${{ github.event.inputs.dgn }}
+      APP_NAME: ${{ github.event.inputs.dgn }}-dashboard-server2
+      # static
+      APP_NAME_SHORT: "dashboard-server2"
+      AWS_REGION: "ap-south-1"
+      DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
 
     steps:
       - name: Checkout repository
@@ -17,17 +29,20 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Get and print commit SHA
+      - name: Set commit SHA
         run: |
           if [ -z "${{ github.event.inputs.commit_sha }}" ]; then
-            git fetch origin main
-            COMMIT_SHA=$(git rev-parse origin/development)
-            echo "Using latest commit SHA from main branch: $COMMIT_SHA"
+            git fetch origin feature
+            LATEST_SHA=$(git rev-parse origin/development)
+            echo "COMMIT_SHA=$LATEST_SHA" >> $GITHUB_ENV
           else
-            COMMIT_SHA="${{ github.event.inputs.commit_sha }}"
-            echo "Using provided commit SHA: $COMMIT_SHA"
+            echo "COMMIT_SHA=${{ github.event.inputs.commit_sha }}" >> $GITHUB_ENV
           fi
-          echo "COMMIT_SHA=$COMMIT_SHA" >> $GITHUB_ENV
 
-      - name: Print final commit SHA
-        run: echo "Final commit SHA: ${{ env.COMMIT_SHA }}"
+      - name: Checkout specific commit
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ env.COMMIT_SHA }}
+          fetch-depth: 0
+      - name: print sha 
+        run: echo "Final commit SHA ${{ env.COMMIT_SHA }}"
