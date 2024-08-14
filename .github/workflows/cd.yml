@@ -13,7 +13,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+    env:
+      # dynamic
+      DGN: ${{ github.event.inputs.dgn}}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
