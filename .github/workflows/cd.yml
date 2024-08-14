@@ -21,7 +21,7 @@ jobs:
         run: |
           if [ -z "${{ github.event.inputs.commit_sha }}" ]; then
             git fetch origin main
-            COMMIT_SHA=$(git rev-parse origin/main)
+            COMMIT_SHA=$(git rev-parse origin/development)
             echo "Using latest commit SHA from main branch: $COMMIT_SHA"
           else
             COMMIT_SHA="${{ github.event.inputs.commit_sha }}"
