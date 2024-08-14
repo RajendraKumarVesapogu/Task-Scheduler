@@ -1,12 +1,11 @@
-name: Print Latest Commit SHA
+name: Print Commit SHA
 
 on:
   workflow_dispatch:
     inputs:
-      branch:
-        description: "Branch name"
-        required: true
-        default: 'main'
+      commit_sha:
+        description: "Commit SHA (optional, defaults to latest commit on main)"
+        required: false
 
 jobs:
   print-sha:
@@ -18,8 +17,17 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Get and print latest commit SHA
+      - name: Get and print commit SHA
         run: |
-          git fetch origin ${{ github.event.inputs.branch }}
-          LATEST_SHA=$(git rev-parse origin/${{ github.event.inputs.branch }})
-          echo "Latest commit SHA on ${{ github.event.inputs.branch }}: $LATEST_SHA"
+          if [ -z "${{ github.event.inputs.commit_sha }}" ]; then
+            git fetch origin main
+            COMMIT_SHA=$(git rev-parse origin/main)
+            echo "Using latest commit SHA from main branch: $COMMIT_SHA"
+          else
+            COMMIT_SHA="${{ github.event.inputs.commit_sha }}"
+            echo "Using provided commit SHA: $COMMIT_SHA"
+          fi
+          echo "COMMIT_SHA=$COMMIT_SHA" >> $GITHUB_ENV
+
+      - name: Print final commit SHA
+        run: echo "Final commit SHA: ${{ env.COMMIT_SHA }}"
