@@ -13,31 +13,32 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     env:
       # dynamic
       DGN: ${{ github.event.inputs.dgn}}
+      APP_NAME: ${{ github.event.inputs.dgn }}-dashboard-server2
+      # static
+      APP_NAME_SHORT: "dashboard-server2"
+      AWS_REGION: "ap-south-1"
+      DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
 
-      - name: Set commit SHA
+      - name: Set commit SHA and checkout
         run: |
           if [ -z "${{ github.event.inputs.commit_sha }}" ]; then
-            git fetch origin main
-            COMMIT_SHA=$(git rev-parse origin/development)
-            echo "Using latest commit SHA from main branch: $COMMIT_SHA"
+            CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+            git fetch origin $CURRENT_BRANCH
+            COMMIT_SHA=$(git rev-parse origin/$CURRENT_BRANCH)
+            echo "Using latest commit SHA from $CURRENT_BRANCH branch: $COMMIT_SHA"
           else
             COMMIT_SHA="${{ github.event.inputs.commit_sha }}"
             echo "Using provided commit SHA: $COMMIT_SHA"
           fi
           echo "COMMIT_SHA=$COMMIT_SHA" >> $GITHUB_ENV
-
-      - name: Checkout specific commit
-        uses: actions/checkout@v2
-        with:
-          ref: ${{ env.COMMIT_SHA }}
-          fetch-depth: 0
-      - name: print sha 
-        run: echo "Final commit SHA ${{ env.COMMIT_SHA }}"
+          git checkout $COMMIT_SHA
