@@ -122,7 +122,6 @@ Response Structure:
 
 End point : `host:port\task\update`
 ##### PUT ('\\'):
-
 Body Structure :
 
 ```
